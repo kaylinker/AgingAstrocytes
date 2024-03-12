@@ -1,0 +1,21 @@
+####### Single-cell fastq and count matrix generation #######
+
+#! /bin/bash
+export PATH=/your/path/to/cellranger-4.0.0:$PATH 
+export PATH
+
+cellranger mkfastq --id=SAMPLE-bcl \
+             --run=/path/to/SAMPLE_bcl \
+
+
+########## Count matrix generation ################  
+FASTQ_DIR=/path/to/fastq/folder/  
+SAMPLE_ID=`for dir in $FASTQ_DIR/*; do basename "$dir"; done`
+echo $SAMPLE_ID
+
+
+for d in $SAMPLE_ID; do 
+  cellranger count --id=${d}_id --sample=${d} --transcriptome=/path/to/reference/refdata-gex-mm10-2020-A 
+    --fastqs=$FASTQ_DIR --expect-cells=10000  
+done
+
