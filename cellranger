@@ -1,4 +1,4 @@
-####### Single-cell fastq and count matrix generation #######
+####### Single-cell fastq generation #######
 
 #! /bin/bash
 export PATH=/your/path/to/cellranger-4.0.0:$PATH 
