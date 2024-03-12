@@ -1,0 +1,183 @@
+#!/usr/bin/env Rscript
+#Load Packages
+library(dplyr)
+library(SeuratData)
+library(Seurat)
+library(SeuratObject)
+library(patchwork)
+
+
+#Load the data & Creat Objects
+#Old
+Aged.WhStr.01.data <- Read10X(data.dir = "C:/path/to/Aged-WhStr-01/filtered_feature_bc_matrix")
+Aged.WhStr.02.data <- Read10X(data.dir = "C:/path/to/Aged-WhStr-02/filtered_feature_bc_matrix")
+Aged.WhStr.03.data <- Read10X(data.dir = "C:/path/to/Aged-WhStr-03/filtered_feature_bc_matrix")
+Aged.WhStr.04.data <- Read10X(data.dir = "C:/path/to/Aged-WhStr-04/filtered_feature_bc_matrix")
+
+Aged.WhStr.01 <- CreateSeuratObject(counts = Aged.WhStr.01.data, project = "Aged.WhStr.01.data", min.cells = 3, min.features = 100)
+Aged.WhStr.02 <- CreateSeuratObject(counts = Aged.WhStr.02.data, project = "Aged.WhStr.02.data", min.cells = 3, min.features = 100)
+Aged.WhStr.03 <- CreateSeuratObject(counts = Aged.WhStr.03.data, project = "Aged.WhStr.03.data", min.cells = 3, min.features = 100)
+Aged.WhStr.04 <- CreateSeuratObject(counts = Aged.WhStr.04.data, project = "Aged.WhStr.04.data", min.cells = 3, min.features = 100)
+
+#Young
+Young.WhStr.01.data <- Read10X(data.dir = "D:/path/to/Young-WhSr-01/filtered_feature_bc_matrix")
+Young.WhStr.02.data <- Read10X(data.dir = "D:/path/to/Young-WhSr-02/filtered_feature_bc_matrix")
+Young.WhStr.03.data <- Read10X(data.dir = "D:/path/to/Young-WhSr-03/filtered_feature_bc_matrix")
+Young.WhStr.04.data <- Read10X(data.dir = "D:/path/to/Young-WhSr-04/filtered_feature_bc_matrix")
+
+Young.01 <- CreateSeuratObject(counts = Young.WhStr.01.data, project = "Young.WhStr.01.data", min.cells = 3, min.features = 100)
+Young.02 <- CreateSeuratObject(counts = Young.WhStr.02.data, project = "Young.WhStr.02.data", min.cells = 3, min.features = 100)
+Young.03 <- CreateSeuratObject(counts = Young.WhStr.03.data, project = "Young.WhStr.03.data", min.cells = 3, min.features = 100)
+Young.04 <- CreateSeuratObject(counts = Young.WhStr.04.data, project = "Young.WhStr.04.data", min.cells = 3, min.features = 100)
+
+
+
+
+#Percent mt for each object 
+Aged.WhStr.01[["percent.mt"]] <- PercentageFeatureSet(Aged.WhStr.01, pattern = "^MT-")
+Aged.WhStr.02[["percent.mt"]] <- PercentageFeatureSet(Aged.WhStr.02, pattern = "^MT-")
+Aged.WhStr.03[["percent.mt"]] <- PercentageFeatureSet(Aged.WhStr.03, pattern = "^MT-")
+Aged.WhStr.04[["percent.mt"]] <- PercentageFeatureSet(Aged.WhStr.04, pattern = "^MT-")
+
+VlnPlot(Aged.WhStr.01, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3) #6000
+VlnPlot(Aged.WhStr.02, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3) #4000 genes
+VlnPlot(Aged.WhStr.03, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3) #4000 genes
+VlnPlot(Aged.WhStr.04, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3) #4000 genes
+
+#Normalize & Find Variable features individually
+#old
+Aged.WhStr.01 <- NormalizeData(Aged.WhStr.01)
+Aged.WhStr.02 <- NormalizeData(Aged.WhStr.02)
+Aged.WhStr.03 <- NormalizeData(Aged.WhStr.03)
+Aged.WhStr.04 <- NormalizeData(Aged.WhStr.04)
+
+
+Aged.WhStr.01 <- FindVariableFeatures(Aged.WhStr.01, selection.method = "vst", nfeatures = 6000)
+Aged.WhStr.02 <- FindVariableFeatures(Aged.WhStr.02, selection.method = "vst", nfeatures = 6000)
+Aged.WhStr.03 <- FindVariableFeatures(Aged.WhStr.03, selection.method = "vst", nfeatures = 6000)
+Aged.WhStr.04 <- FindVariableFeatures(Aged.WhStr.04, selection.method = "vst", nfeatures = 6000)
+
+plot1 <- VariableFeaturePlot(Aged.WhStr.01)
+plot2 <- VariableFeaturePlot(Aged.WhStr.02)
+plot3 <- VariableFeaturePlot(Aged.WhStr.03)
+plot4 <- VariableFeaturePlot(Aged.WhStr.04)
+plot1 + plot2 + plot3 + plot4+
+  
+top10 <- head(VariableFeatures(Aged.WhStr.04), 10)
+LabelPoints(plot = plot4, points = top10, repel = TRUE)
+
+#Young Normalize / VST variabile features
+Young.01 <- NormalizeData(Young.01)
+Young.02 <- NormalizeData(Young.02)
+Young.03 <- NormalizeData(Young.03)
+Young.04 <- NormalizeData(Young.04)
+
+
+Young.01 <- FindVariableFeatures(Young.01, selection.method = "vst", nfeatures = 6000)
+Young.02 <- FindVariableFeatures(Young.02, selection.method = "vst", nfeatures = 6000)
+Young.03 <- FindVariableFeatures(Young.03, selection.method = "vst", nfeatures = 6000)
+Young.04 <- FindVariableFeatures(Young.04, selection.method = "vst", nfeatures = 6000)
+
+#CCA integration of Old
+Aged.Str<- list(Aged.WhStr.01,Aged.WhStr.02,Aged.WhStr.03,Aged.WhStr.04)
+Aged.anchors <- FindIntegrationAnchors(object.list = Aged.Str, dims = 1:20)
+Aged.integrated <- IntegrateData(anchorset = Aged.anchors, dims = 1:20)
+DefaultAssay(Aged.integrated) <- "integrated"
+
+#CCA integration of Young
+Young.Str<- list(Young.01,Young.02,Young.03,Young.04)
+Young.anchors <- FindIntegrationAnchors(object.list = Young.Str, dims = 1:20)
+Young.integrated <- IntegrateData(anchorset = Young.anchors, dims = 1:20)
+DefaultAssay(Young.integrated) <- "integrated"
+
+#Now Young.Str and Old.Str are a list
+
+#Remove unnecessary data
+remove(Aged.WhStr.04.data)
+remove(Aged.WhStr.03.data)
+remove(Aged.WhStr.02.data)
+remove(Aged.WhStr.01.data)
+remove(Young.WhStr.01.data)
+remove(Young.WhStr.02.data)
+remove(Young.WhStr.03.data)
+remove(Young.WhStr.04.data)
+
+#Explore the objects
+table(Idents(Young.integrated))
+table(Idents(Aged.integrated))
+
+#Visualize efficiency of CCA integration - Young
+Young.Str <- ScaleData(Young.integrated, verbose = FALSE)
+Young.Str <- RunPCA(Young.Str, npcs = 30, verbose = TRUE)
+ElbowPlot(Young.Str)
+Idents(Young.Str)
+Young.Str <- RunUMAP(Young.Str, reduction = "pca", dims = 1:8)
+Young.Str <- FindNeighbors(Young.Str, reduction = "pca", dims = 1:8)
+Young.Str <- FindClusters(Young.Str, resolution = 0.08)
+#Store the current cell type
+Young.Str$CellType <- Idents(Young.Str)
+#Image the integration
+p1 <-DimPlot(Young.Str, reduction = "umap", group.by = "orig.ident", cols = c("mediumaquamarine","seagreen","palegreen4","palegreen2"),
+             shuffle = TRUE)
+p2 <- DimPlot(Young.Str, reduction = "umap", label = FALSE, group.by = "CellType", cols = "Spectral")
+p1 + p2
+
+
+#Visualize efficiency of CCA integration - OLD
+Aged.Str <- ScaleData(Aged.integrated, verbose = FALSE)
+Aged.Str <- RunPCA(Aged.Str, npcs = 30, verbose = TRUE)
+ElbowPlot(Aged.Str)
+
+Aged.Str <- RunUMAP(Aged.Str, reduction = "pca", dims = 1:8)
+Aged.Str <- FindNeighbors(Aged.Str, reduction = "pca", dims = 1:8)
+Aged.Str <- FindClusters(Aged.Str, resolution = 0.08)
+
+#Store the current cell type
+Aged.Str$CellType <- Idents(Aged.Str)
+#Image the integration
+p1 <-DimPlot(Aged.Str, reduction = "umap", group.by = "orig.ident", cols = c("salmon","salmon4","indianred4","indianred1"),
+             shuffle = TRUE)
+p2 <- DimPlot(Aged.Str, reduction = "umap", label = FALSE, group.by = "CellType", cols = "Spectral")
+p1 + p2
+
+#COMBINE OLD AND YOUNG
+
+#Normalize / Find Variable features of each young and old list individually
+Young.integrated <- NormalizeData(Young.integrated)
+Aged.integrated <- NormalizeData(Aged.integrated)
+Young.integrated <- FindVariableFeatures(Young.integrated, selection.method = "vst", nfeatures = 6000)
+Aged.integrated <- FindVariableFeatures(Aged.integrated, selection.method = "vst", nfeatures = 6000)
+
+#Integrate old and young
+All.Str.<- list(Young.integrated,Aged.integrated)
+all.anchors <- FindIntegrationAnchors(object.list = All.Str., dims = 1:20)
+All.Striatum.integrated <- IntegrateData(anchorset = all.anchors, dims = 1:20)
+DefaultAssay(All.Striatum.integrated) <- "integrated"
+
+#Standard workflow
+All.Striatum.integrated <- ScaleData(All.Striatum.integrated, verbose = FALSE)
+All.Striatum.integrated <- RunPCA(All.Striatum.integrated, npcs = 30, verbose = TRUE)
+ElbowPlot(All.Striatum.integrated)
+Idents(All.Striatum.integrated)
+
+All.Striatum.integrated <- RunUMAP(All.Striatum.integrated, reduction = "pca", dims = 1:10)
+All.Striatum.integrated <- FindNeighbors(All.Striatum.integrated, reduction = "pca", dims = 1:10)
+All.Striatum.integrated <- FindClusters(All.Striatum.integrated, resolution = 0.08)
+
+
+#Image the integration
+p1 <-DimPlot(All.Striatum.integrated, reduction = "umap", group.by = "orig.ident", cols = c("salmon","salmon4","indianred4","indianred1","mediumaquamarine","seagreen","palegreen4","palegreen2"),
+             shuffle = TRUE)
+p2 <- DimPlot(All.Striatum.integrated, reduction = "umap", label = FALSE, group.by = "CellType", cols = "Spectral", c("midnightblue"))
+p1 + p2
+
+
+#Find Cell Markers of Old, Young and Old+young for subsequent cellular demarcation
+Young.Markers.Celltypes <- FindAllMarkers(Young.Str, only.pos = TRUE, min.pct = 0.15, logfc.threshold = 0.15)
+Aged.Markers.Celltypes <- FindAllMarkers(Aged.Str, only.pos = TRUE, min.pct = 0.15, logfc.threshold = 0.15)
+Striatum.Markers <- FindAllMarkers(All.Striatum.integrated, only.pos = TRUE, min.pct = 0.15, logfc.threshold = 0.15)
+
+write.xlsx(Striatum.Markers,"Striatum.Markers.xlsx")
+write.xlsx(Young.Markers.Celltypes,"Young.Markers.xlsx")
+write.xlsx(Aged.Markers.Celltypes,"Aged.Markers.xlsx")
+
