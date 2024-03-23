@@ -1,0 +1,772 @@
+################# WHOLE STRIATUM POLYGON ###################
+rm(MERFISH_Striatum.Y3)
+#pull out each sample 
+Idents(object=Young.combined) <- Young.combined@meta.data$coverslip
+Idents(object=Aged.combined) <- Aged.combined@meta.data$coverslip
+
+MERFISH_Striatum.Y1 <- Young05.s
+MERFISH_Striatum.Y2 <- Young02.s
+MERFISH_Striatum.A1 <- Aged05.s
+MERFISH_Striatum.A2 <- Aged03.s
+
+## pull out x and y cooridinates from meta data 
+MERFISH_Striatum.Y1.X <- Young05.s@meta.data[,5]
+head(MERFISH_Striatum.Y1.X)
+MERFISH_Striatum.Y1.Y <- Young05.s@meta.data[,6]
+head(MERFISH_Striatum.Y1.Y)
+
+plot (MERFISH_Striatum.Y1.X,MERFISH_Striatum.Y1.Y)
+ggplot(data.frame(MERFISH_Striatum.Y1.X.df$x, MERFISH_Striatum.Y1.Y.df$y), aes(x,y)) + geom_point(size=.1)
+
+MERFISH_Striatum.Y2.X <- MERFISH_Striatum.Y2@meta.data[,5]
+head(MERFISH_Striatum.Y2.X)
+MERFISH_Striatum.Y2.Y <- MERFISH_Striatum.Y2@meta.data[,6]
+head(MERFISH_Striatum.Y2.Y)
+
+
+
+MERFISH_Striatum.A1.X <- MERFISH_Striatum.A1@meta.data[,5]
+MERFISH_Striatum.A1.Y <- MERFISH_Striatum.A1@meta.data[,6]
+
+MERFISH_Striatum.A2.X <- MERFISH_Striatum.A2@meta.data[,5]
+MERFISH_Striatum.A2.Y <- MERFISH_Striatum.A2@meta.data[,6]
+
+############ OLD  XY coordinates for whole striatum#############################
+
+Y01.Whstr.Left.X <- c(3661.6,3418.09,3009.36,2522.42,2167.79,1973.11,1813.15,1790.25,1884.93,2019.02,2438.26,3017.09,3667.71,4057.39,
+                      4504.46,4520.15,4402.56,4068.07,3768.85,3632.84,3663.51,3658.2,3649.72)
+Y01.Whstr.Left.Y <- c(3820.67,3656.43,3578.68,3681.7,3938.79,4140.9,4515.5,4990.08,5560.41,6083.11,6747.94,6989.86,6824.74,6455.13,
+                      5844.87,5474.21,5201.77,4905.53,4801.27,4573.72,4254.6,4015.61,3896.97)
+
+Y01.Whstr.Right.X <- c(4927.87,5035.23,5344.05,5530.68,5689.65,5939.81,6145.36,6389.22,6649.93,6855.76,7070.18,7367.03,7585.13,
+                       7661.25,7705.13,7789.28,7755.86,7502.62,7163.52,6979.87,6440.85,5924.32,5697.81,6229.6,5881.55,
+                       5418.66,5034.72,4983.16,4929.93,5016.34,5165.38,5320.92,5414.62,5453.53,5302.84,5125.02,4964.62)
+Y01.Whstr.Right.Y <- c(3298.26,3113.64,2871.88,2758.28,2722.58,2665.46,2640.04,2656.39,2711.29,2819.17,2940.91,3204.36,
+                       3417.75,3676.69,4078.35,4367.9,4843.63,5215.45,5788.37,6165.93,6232.23,6059.66,5894.97,5990.91,
+                       6056.96,5882.02,5672.57,5425.96,5127.4,4859.8,4636.73,4482.1,4414.8,4216.43,4032.21,3805.28,3525.12)
+
+Y02.Whstr.Left.X <- c(4093.55,4002.23,3964.31,3971.34,4099.06,4321.49,4514.75,4718.21,5036.27,5393.39,5745.28,6197.49,
+                      6585.76,6855.77,7182.36,7314.61,7271.58,7005.56,6535.99,6134.41,5751.69,5432.69,5295.07,4974.06,
+                      4786.03,4668.56,4623.01,4651.63,4472.14,4312.56,4204.09,4105.81,4039.06)
+Y02.Whstr.Left.Y <- c(5331.65,5562.22,5963.75,6216.72,6485.03,6642.11,6758.61,6804.24,6855.98,6824.39,6630.66,6405.18,
+                      6129.36,5840.67,5401.75,4847.69,4393.13,3986.44,3786.23,3677.56,3703.89,3766.64,3825.37,3991.51,
+                      4211.41,4537.02,4798.11,5020.13,5146.38,5257.21,5276.3,5293.04,5466.1)
+
+Y02.Whstr.Right.X <- c(3387.28,3084.55,2533.65,2269.18,2253.31,2262.13,2326.21,2563.62,2721.35,2917.53,3226.06,3619.64,
+                       3964.61,4328.91,4760.8,5078.53,5272.16,5450.84,5297.34,5191.37,5036.37,4786.5,4349.45,4119.06,
+                       3882.68,3778.84,3607.79,3522.94,3480.27,3411.8)
+Y02.Whstr.Right.Y <- c(4239.61,4275.4,4000.47,3484.71,3102.96,2892.18,2473.65,2288.07,2133.69,1925.37,1718.91,1415.93,
+                       1324.07,1151.67,1102.83,1322.29,1875.14,2518.22,3018.53,3271.6,3483.55,3725.63,3666,3733,3699.59,
+                       3727.88,3886.28,4052.48,4180.21,4237.99)
+
+A01.Whstr.Left.X <- c(3157.69,2879.38,2899.62,3233.53,3610.51,4166.81,4415.48,5327.56,5882.71,6384.86,
+                       6387.6,5817.46,5043.31,4633.84,4363.74,4158.76,3864.12,3461.58,3157.69)
+                       
+A01.Whstr.Left.Y <- c(5592.21,5889.32,6933.84,7266.3,7611.48,7827.44,7795.57,7862.95,7768.47,6643.75,5820.62,
+                      5075.06,5039.63,5104.3,5485.57,5643.59,5622.85,5590.93,5592.21)
+  
+A01.Whstr.Right.X <- c(3088.66,2821.71,2720.9,2670.67,2725.89,3000.89,3541,4011.19,5000.6,5945.27,6391.27,
+                       6363.07,6263.76,5929.02,5468.36,5254.12,4925.02,4536.37,4211.75,3652.97,3145.92)
+
+A01.Whstr.Right.Y <- c(4112.49,3941.31,3574.92,3339.91,2926.43,2422.13,2149.37,2019.14,1960.95,2184.91,
+                       2533.97,2939.67,3337.2,3705.81,4025.25,4210.66,4448.75,4394.78,3888.14,4007.13,4126.5)
+
+
+#A02.Whstr.Right.X <- c(4301.42,4143.38,3901.47,3418.74,3101,2799.81,2450.75,2066.69,1834.69,1704.75,1576.95,
+                       1613.67,1756.7,2168.89,2872.06,3287.17,3716.81,3907.21,4027.11,3767.79,3672.28,3754.01,
+                       3939.05,4173.96,4277.47)
+                       
+  
+#A02.Whstr.Right.Y <- c(4774.29,5118.37,5440.3,5710.81,5752.52,5699.35,5532.98,5192.23,4822.41,4404.23,4016.2,
+                       3449.22,2919.53,2419.8,2496.51,2404.15,2614.32,2871.33,3291.05,3695.67,3880.18,4123.37,
+                       4304.74,4597.05,4723.18)
+
+#A02.Whstr.Left.X <- c(5746.66,6080.41,6456.88,6624.42,6791.24,6910.93,7027.32,7146.26,7097.81,6813.05,6423.31,
+                      6009.61,5417.73,5028.51,4547.95,4264.5,4277.43,4502.29,4767.56,5257.43,5380.74,5431.49)
+
+#A02.Whstr.Left.Y <- c(4204.59,4322.57,4328.61,4390.35,4211.87,3956.72,3637.75,3348.15,3149.72,2844.27,2393.37,1871.71,1616.11,
+                      1386.08,1367.81,1880.69,2299.87,2828.89,3081.24,3275.44,3353.34,3588.7,3996.98)
+
+
+A02.Whstr.Right.X <-c(5443.1,5002.22,4770.41,4448.43,4550.5,4786.39,5023.29,5450.48,6215.16,6709.15,6963.02,7000.22,
+                      7061.99,6966.03,6782.54,6425.83,5708.32,5478.66)
+A02.Whstr.Right.Y <-c(4020.26,3257.84,2528.85,2171.64,1790.86,1466.61,1212.23,1151.44,1332.57,1773.06,2455.74,3044.41,
+                      3443.68,3804.56,4181.45,4399.64,4360.8,4097.67)
+
+A02.Whstr.Left.X <- c(4317.14,3882.18,3340.4,2895.15,2469.54,2067.77,1833.6,1539.96,1471.31,1513.68,1751.08,1676.27,
+                      1826.75,2627.57,2934.46,3201.91,3656.33,3921.3,3648.09,3827.34,4149.01)
+A02.Whstr.Left.Y <- c(4825.26,5629.5,5864.8,5820.27,5646.01,5114.9,4564.66,4123.82,3623.84,3391.51,3025.24,2770.43,
+                      2675.28,2362.72,2403.91,2394.86,2594.56,3502.47,3917.82,4114.73,4565.08)
+
+
+#################### NEW XY coordinates for whole striatum ######################
+
+Y05.Whstr.Left.X <- c(3677.96,3679.33,3718.03,3848.5,4178.66,4239.71,4495.8,4545.76,4336.4,3874.78,3302.51,2788.4,2233.78,2094.92,
+                      1694.84,1450.51,1402.99,1451.98,1354.75,1409.81,1812.69,2118.86,2443.44,2768.99,3067.68,3369.43,3555.04,3661.6)
+
+Y05.Whstr.Left.Y <- c(4047.22,4444.17,4611.73,4690.41,4989.66,5370.66,5552.83,5961.88,6401.76,6760.95,6974.81,7013.99,6710.09,6154.31,
+                      5781.3,5121.26,4956.5,4391.81,4230.68,4100.34,3942.43,3791.14,3646.44,3449.37,3418.63,3446.6,3655,3820.67)
+
+Y05.Whstr.Right.X <- c(4942.59,5042.87,5231,5329.6,5134.83,4971.38,4855.31,4922.68,5197.38,5807.98,6152.69,6701.96,7243.71,7443.37,7685.07,
+                       7745.87,7824.12,7908.54,7801.12,7737.94,7670.22,7419.95,7282.66,7176.23,6680.65,6123.88,5613,5181.05,4886.93,4983.14)
+
+Y05.Whstr.Right.Y <- c(3494.71,3691.79,3950.78,4227.33,4429.41,4571.81,5018.04,5619.29,6014.13,6156.88,6127.07,6166.36,6039.28,5812.47,5475.95,5050.69,4616.83,
+                       4339.22,4152.91,3876.45,3641.38,3265.92,2936.43,2759.34,2446.22,2490.15,2575.69,2912.94,3247.3,3551.36)
+
+Y02.Whstr.Left.X <- c(4041,3938.08,3849.06,3936.88,4068.13,4283.33,4946.2,5395.87,5884.15,6304.73,6611.34,6800.92,6954.03,7035.49,
+                      7055.84,6939.78,6787.78,6436.04,5995.17,5365.06,4790.98,4567.31,4516.63,4407.12)
+Y02.Whstr.Left.Y <- c(5331.32,5604.22,6075.95,6503.58,6724.84,6962.81,7080.34,7123.55,6964.23,6541.74,6286.87,5888.01,5416.55,5061.49,
+                      4788.05,4373.57,4131.08,3931.02,3512.81,3595.22,4025.84,4548.47,4952.34,5174.42)
+
+Y02.Whstr.Right.X <- c(3423.84,2862.17,2463.46,2181.04,1954.25,1867.01,2179.08,2485.12,2687.39,2976.7,3168.83,3386.92,3785.33,4190.57,4668.19,
+                       5024.98,5298.92,5562.16,5267.06,4825.28,4519.48,4035.22,3724.07,3530.98)
+Y02.Whstr.Right.Y <- c(4234.16,4298.97,4105.85,3836.98,3506.3,3145.59,
+                       2783.32,
+                       2424.11,
+                       2183.2,
+                       1991.26,
+                       1823.5,
+                       1663.78,
+                       1592.16,
+                       1501.82,
+                       1602.27,
+                       1811.2,
+                       2234.32,
+                       3149.68,
+                       3519.87,
+                       3782.73,
+                       3901.15,
+                       3850.7,
+                       3813.92,
+                       4009.99)
+
+A03.Whstr.Left.X <- c(3989.53,4160.06,4201.93,4263.85,4273.75,3843.73,3298.17,2639,2164.57,1820.8,1672.2,1423.08,1349.1,1456.38,
+                      1715.87,1848.3,2497.19,3031.39,3680.68,4014.73,4320.26,4262.89,3984.51,4155.76)
+
+A03.Whstr.Left.Y <- c(4095,
+                      4261.93,
+                      4646.28,
+                      4867.06,
+                      5179.59,
+                      5658.47,
+                      5870.09,
+                      5969.65,
+                      5774.86,
+                      5360.88,
+                      4754.28,
+                      4288.61,
+                      3856.42,
+                      3424.35,
+                      3073.41,
+                      2795.38,
+                      2502.83,
+                      2388.52,
+                      2519.44,
+                      2866.73,
+                      3076.43,
+                      3790.79,
+                      4100.56,
+                      4583.12)
+
+A03.Whstr.Right.X <- c(5440,
+                       5857.05,
+                       6405.82,
+                       6892.33,
+                       7227.79,
+                       7324.29,
+                       7353.85,
+                       7232.98,
+                       7194.31,
+                       6852.59,
+                       6197.5,
+                       5804.9,
+                       5124.84,
+                       4748.24,
+                       4476.39,
+                       4276.6,
+                       4208.91,
+                       4432.5,
+                       4970.07,
+                       5284.64,
+                       5385.15,
+                       5441.64)
+                       
+A03.Whstr.Right.Y <- c(4232.4,
+                       4648.49,
+                       4744.6,
+                       4358.15,
+                       3881.33,
+                       3317.35,
+                       2868.63,
+                       2478.7,
+                       2027.26,
+                       1817.5,
+                       1488.49,
+                       1348.8,
+                       1377.86,
+                       1542.71,
+                       1798.8,
+                       2186.03,
+                       2732.07,
+                       3248.43,
+                       3544.1,
+                       3584.63,
+                       3846.03,
+                       4039.48)
+                       
+
+A05.Whstr.Left.X <- c(3190.85,
+                      2782.91,
+                      2555.57,
+                      2526.77,
+                      2956.58,
+                      3364.2,
+                      3844.51,
+                      4907.81,
+                      4998.64,
+                      5284.85,
+                      5630.38,
+                      5947.92,
+                      6133.72,
+                      6277.84,
+                      6341.05,
+                      6293.24,
+                      6344.15,
+                      6030.4,
+                      5551.08,
+                      4958.26,
+                      4427.71,
+                      4092.12,
+                      3846.25,
+                      3358.39)
+
+A05.Whstr.Left.X <- c(5600.31,5745.11,
+6259.16,
+6893.96,
+7534.36,
+7862.93,
+8002.54,
+8147.32,
+8070.75,
+8013.84,
+7854.48,
+7511.29,
+7170.9,
+6682.52,
+6330.05,
+5910.84,
+5566.67,
+5378.82,
+5155.04,
+4965.82,
+5127.02,
+5325.42,
+5526.46,
+5589.09)
+
+A05.Whstr.Right.X <- c(3146.78,
+2688.34,
+2414.58,
+2381.14,
+2574.94,
+2897.45,
+3159.18,
+3410.42,
+3713.48,
+3973.84,
+4690.64,
+5023.24,
+5666.44,
+6102.01,
+6173.7,
+5929.22,
+5620.92,
+4920.86,
+4274.97,
+3980.55,
+3845.69,
+3307.7)
+
+
+A05.Whstr.Right.Y <- c(4135.89,
+4102.99,
+3638.32,
+3157.11,
+2733.85,
+2322.08,
+2020.91,
+1842.85,
+1721.98,
+1533.58,
+1554.91,
+1705.17,
+2089.21,
+2433.68,
+3049.91,
+3785.14,
+4279.56,
+4488.22,
+4496.14,
+4312.65,
+3985.06,
+3985.06)
+
+
+##################### Pull out point on polygon and create meta data columns ######################
+
+S1_Striatum_Y1_L <- point.in.polygon(MERFISH_Striatum.Y1.X, MERFISH_Striatum.Y1.Y, Y05.Whstr.Left.X, Y05.Whstr.Left.Y)
+S1_Striatum_Y1_R <- point.in.polygon(MERFISH_Striatum.Y1.X, MERFISH_Striatum.Y1.Y, Y05.Whstr.Right.X, Y05.Whstr.Right.Y)
+
+S1_Striatum_Y2_L <- point.in.polygon(MERFISH_Striatum.Y2.X, MERFISH_Striatum.Y2.Y, Y02.Whstr.Left.X, Y02.Whstr.Left.Y)
+S1_Striatum_Y2_R <- point.in.polygon(MERFISH_Striatum.Y2.X, MERFISH_Striatum.Y2.Y, Y02.Whstr.Right.X, Y02.Whstr.Right.Y)
+
+S1_Striatum_A1_L <- point.in.polygon(MERFISH_Striatum.A1.X, MERFISH_Striatum.A1.Y, A05.Whstr.Left.X, A05.Whstr.Left.Y)
+S1_Striatum_A1_R <- point.in.polygon(MERFISH_Striatum.A1.X, MERFISH_Striatum.A1.Y, A05.Whstr.Right.X, A05.Whstr.Right.Y)
+
+S1_Striatum_A2_L <- point.in.polygon(MERFISH_Striatum.A2.X, MERFISH_Striatum.A2.Y, A03.Whstr.Left.X, A03.Whstr.Left.Y)
+S1_Striatum_A2_R <- point.in.polygon(MERFISH_Striatum.A2.X, MERFISH_Striatum.A2.Y, A03.Whstr.Right.X, A03.Whstr.Right.Y)
+
+
+S1_Striatum_Y1.info <- cbind.data.frame(S1_Striatum_Y1_L)
+head(S1_Striatum_Y1.info, 50)
+StriatumRegion <- rowSums(S1_Striatum_Y1.info)
+S1_Striatum_Y1.info <- cbind.data.frame(StriatumRegion,S1_Striatum_Y1_R)
+head(S1_Striatum_Y1.info, 50)
+S1_Striatum_Y1.info2 <- S1_Striatum_Y1.info %>% mutate(StriatumRegion2 = if_else(StriatumRegion > 0,"Left","non_S1"))
+head(S1_Striatum_Y1.info2, 50)
+S1_Striatum_Y1.info3 <- S1_Striatum_Y1.info2 %>% mutate(StriatumRegion3 = if_else(StriatumRegion2 == "non_S1" & S1_Striatum_Y1_R > 0,"Right",StriatumRegion2))
+head(S1_Striatum_Y1.info3, 50)
+StriatumRegion.all <-S1_Striatum_Y1.info3[,4]
+
+
+S1_Striatum_Y2.info <- cbind.data.frame(S1_Striatum_Y2_L)
+head(S1_Striatum_Y2.info, 50)
+StriatumRegionY2 <- rowSums(S1_Striatum_Y2.info)
+S1_Striatum_Y2.info <- cbind.data.frame(StriatumRegionY2,S1_Striatum_Y2_R)
+head(S1_Striatum_Y2.info, 50)
+S1_Striatum_Y2.info2 <- S1_Striatum_Y2.info %>% mutate(StriatumRegionY2.2 = if_else(StriatumRegionY2 > 0,"Left","non_S1"))
+head(S1_Striatum_Y2.info2, 50)
+S1_Striatum_Y2.info3 <- S1_Striatum_Y2.info2 %>% mutate(StriatumRegionY2.3 = if_else(StriatumRegionY2.2 == "non_S1" & S1_Striatum_Y2_R > 0,"Right",StriatumRegionY2.2))
+head(S1_Striatum_Y2.info3, 50)
+StriatumRegion2.all <-S1_Striatum_Y2.info3[,4]
+
+
+S1_Striatum_A1.info <- cbind.data.frame(S1_Striatum_A1_L)
+head(S1_Striatum_A1.info, 50)
+StriatumRegionA1 <- rowSums(S1_Striatum_A1.info)
+S1_Striatum_A1.info <- cbind.data.frame(StriatumRegionA1,S1_Striatum_A1_R)
+head(S1_Striatum_A1.info, 50)
+S1_Striatum_A1.info2 <- S1_Striatum_A1.info %>% mutate(StriatumRegionA1.2 = if_else(StriatumRegionA1 > 0,"Left","non_S1"))
+head(S1_Striatum_A1.info2, 50)
+S1_Striatum_A1.info3 <- S1_Striatum_A1.info2 %>% mutate(StriatumRegionA1.3 = if_else(StriatumRegionA1.2 == "non_S1" & S1_Striatum_A1_R > 0,"Right",StriatumRegionA1.2))
+head(S1_Striatum_A1.info3, 50)
+StriatumRegion3.all <-S1_Striatum_A1.info3[,4]
+
+S1_Striatum_A2.info <- cbind.data.frame(S1_Striatum_A2_L)
+head(S1_Striatum_A2.info, 50)
+StriatumRegionA2 <- rowSums(S1_Striatum_A2.info)
+S1_Striatum_A2.info <- cbind.data.frame(StriatumRegionA2,S1_Striatum_A2_R)
+head(S1_Striatum_A2.info, 50)
+S1_Striatum_A2.info2 <- S1_Striatum_A2.info %>% mutate(StriatumRegionA2.2 = if_else(StriatumRegionA2 > 0,"Left","non_S1"))
+head(S1_Striatum_A2.info2, 50)
+S1_Striatum_A2.info3 <- S1_Striatum_A2.info2 %>% mutate(StriatumRegionA2.3 = if_else(StriatumRegionA2.2 == "non_S1" & S1_Striatum_A2_R > 0,"Right",StriatumRegionA2.2))
+head(S1_Striatum_A2.info3, 50)
+StriatumRegion4.all <-S1_Striatum_A2.info3[,4]
+
+
+MERFISH_Striatum.Y1 <- AddMetaData(MERFISH_Striatum.Y1, metadata = StriatumRegion.all, col.name = "Region")
+MERFISH_Striatum.Y2 <- AddMetaData(MERFISH_Striatum.Y2, metadata = StriatumRegion2.all, col.name = "Region")
+MERFISH_Striatum.A1 <- AddMetaData(MERFISH_Striatum.A1, metadata = StriatumRegion3.all, col.name = "Region")
+MERFISH_Striatum.A2 <- AddMetaData(MERFISH_Striatum.A2, metadata = StriatumRegion4.all, col.name = "Region")
+
+# Merge objects
+MERFISH_COMBINED <- merge(MERFISH_Striatum.A2,y=c(MERFISH_Striatum.Y1, MERFISH_Striatum.Y2, MERFISH_Striatum.A1),add.cell.ids = c("1","2","3","4"))
+
+
+############## Check each region
+
+dfall<- data.frame(MERFISH_COMBINED$center.x[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Young.01"))],
+                   MERFISH_COMBINED$center.y[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Young.01"))],
+                   MERFISH_COMBINED@active.ident[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Young.01"))])
+x <- MERFISH_COMBINED$center.x[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Young.01"))]
+y <- MERFISH_COMBINED$center.y[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Young.01"))]
+group <- MERFISH_COMBINED$Region[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Young.01"))]
+ggplot(dfall,aes(x,y,colour=group))+geom_point(size=.5)+ scale_color_manual(breaks = c("Left", "non_S1", "Right"),
+                                                                          values=c("indianred2", "black", "indianred2"))
+
+
+dfall<- data.frame(MERFISH_COMBINED$center.x[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Young.02"))],
+                   MERFISH_COMBINED$center.y[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Young.02"))],
+                   MERFISH_COMBINED@active.ident[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Young.02"))])
+x <- MERFISH_COMBINED$center.x[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Young.02"))]
+y <- MERFISH_COMBINED$center.y[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Young.02"))]
+group <- MERFISH_COMBINED$Region[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Young.02"))]
+ggplot(dfall,aes(x,y,colour=group))+geom_point(size=.5)+ scale_color_manual(breaks = c("Left", "non_S1", "Right"),
+                                                                            values=c("medium blue", "black", "medium blue"))
+
+dfall<- data.frame(MERFISH_COMBINED$center.x[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Aged.01"))],
+                   MERFISH_COMBINED$center.y[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Aged.01"))],
+                   MERFISH_COMBINED@active.ident[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Aged.01"))])
+x <- MERFISH_COMBINED$center.x[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Aged.01"))]
+y <- MERFISH_COMBINED$center.y[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Aged.01"))]
+group <- MERFISH_COMBINED$Region[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Aged.01"))]
+ggplot(dfall,aes(x,y,colour=group))+geom_point(size=.5)+ scale_color_manual(breaks = c("Left", "non_S1", "Right"),
+                                                                            values=c("red", "black", "medium blue"))
+
+
+dfall<- data.frame(MERFISH_COMBINED$center.x[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Aged.02"))],
+                   MERFISH_COMBINED$center.y[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Aged.02"))],
+                   MERFISH_COMBINED@active.ident[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Aged.02"))])
+x <- MERFISH_COMBINED$center.x[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Aged.02"))]
+y <- MERFISH_COMBINED$center.y[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Aged.02"))]
+group <- MERFISH_COMBINED$Region[WhichCells(object = subset(MERFISH_COMBINED,subset = coverslip =="Aged.02"))]
+ggplot(dfall,aes(x,y,colour=group))+geom_point(size=.5)+ scale_color_manual(breaks = c("Left", "non_S1", "Right"),
+                                                                            values=c("red", "black", "medium blue"))
+
+
+################CLUSTER REGIONS #####################
+
+# pull out striatum
+
+
+MERFISH_Striatum.Y1.str <- subset(x = MERFISH_COMBINED, subset = coverslip == c("Young.01") 
+                            & Region == "Right" | coverslip == c("Young.01") & Region == "Left",invert = FALSE)
+
+MERFISH_Striatum.Y1[[]]
+MERFISH_Striatum.Y2.str <- subset(x = MERFISH_COMBINED, subset = coverslip == c("Young.02") 
+                              & Region == "Right" | coverslip == c("Young.02") & Region == "Left",invert = FALSE)
+
+MERFISH_Striatum.Y2.str[[]]
+MERFISH_Striatum.A1.str <- subset(x = MERFISH_COMBINED, subset = coverslip == c("Aged.01") 
+                                   & Region == "Right" | coverslip == c("Aged.01") & Region == "Left",invert = FALSE)
+
+MERFISH_Striatum.A1.str[[]]
+MERFISH_Striatum.A2.str <- subset(x = MERFISH_COMBINED, subset = coverslip == c("Aged.02") 
+                                  & Region == "Right" | coverslip == c("Aged.02") & Region == "Left",invert = FALSE)
+MERFISH_Striatum.A2.str[[]]
+
+
+
+dfall<- data.frame(WhStr.combined$center.x[WhichCells(object = subset(WhStr.combined,subset = coverslip =="Aged.02"))],
+                   WhStr.combined$center.y[WhichCells(object = subset(WhStr.combined,subset = coverslip =="Aged.02"))],
+                   WhStr.combined@active.ident[WhichCells(object = subset(WhStr.combined,subset = coverslip =="Aged.02"))])
+x <- WhStr.combined$center.x[WhichCells(object = subset(WhStr.combined,subset = coverslip =="Aged.02"))]
+y <- WhStr.combined$center.y[WhichCells(object = subset(WhStr.combined,subset = coverslip =="Aged.02"))]
+group <- WhStr.combined@active.ident[WhichCells(object = subset(WhStr.combined,subset = coverslip =="Aged.02"))]
+ggplot(dfall, aes(x,y,colour=group))+geom_point(size=1)+ theme_classic()
+
+################# Young cluster all cells ###############
+Young <- merge(MERFISH_Striatum.Y1,y=c(MERFISH_Striatum.Y2),add.cell.ids = c("1","2"))
+Young <-NormalizeData(Young)
+Young <- FindVariableFeatures(Young, selection.method = "vst", nfeatures = 383)
+all.genes <- rownames (Young)
+Young <- ScaleData(Young, features = all.genes)
+Young <- RunPCA(Young, features = VariableFeatures(object = Young),npcs = 50)
+ElbowPlot(Young) #15
+Young <- FindNeighbors(Young, dims = 1:20)
+Young <- FindClusters(Young, resolution = 1.0)
+Young <- RunUMAP(Young, dims = 1:20)
+
+
+DimPlot(Young, reduction = "umap", label = FALSE, pt.size = 0.1) 
+DotPlot_scCustom(Young,features = c("Aldoc","Aqp4","Sox9","Clu","Fjx1",
+                                                "Cldn5","Fn1","Itm2a","Pglyrp1",
+                                                "Cx3cr1","Hexb","P2ry12",
+                                                "Cd68","Pf4","Mrc1","Dab2",
+                                                "Plp1","Cldn11","Mag",
+                                                "Acta2","Vtn","Myl9",
+                                                "Sox4","Sox11","Dcx",
+                                                "Tnr","Sirt2","Gpr17","Pdgfra",
+                                                "Drd1","Drd2","Meg3"),
+                 x_lab_rotate = TRUE)
+
+######################### WHSTR AGES COMBINED ##################
+
+
+table(Idents(WhStr.combined))
+
+WhStr.combined <- merge(MERFISH_Striatum.Y1.str,y=c(MERFISH_Striatum.Y2.str, MERFISH_Striatum.A1.str, MERFISH_Striatum.A2.str),add.cell.ids = c("1","2","3","4"))
+WhStr.combined <-NormalizeData(WhStr.combined)
+WhStr.combined <- FindVariableFeatures(WhStr.combined, selection.method = "vst", nfeatures = 383)
+all.genes <- rownames (WhStr.combined)
+WhStr.combined <- ScaleData(WhStr.combined, features = all.genes)
+WhStr.combined <- RunPCA(WhStr.combined, features = VariableFeatures(object = WhStr.combined),npcs = 50)
+ElbowPlot(WhStr.combined) #15
+WhStr.combined <- FindNeighbors(WhStr.combined, dims = 1:10)
+WhStr.combined <- FindClusters(WhStr.combined, resolution = 0.5)
+WhStr.combined <- RunUMAP(WhStr.combined, dims = 1:10)
+
+DimPlot(WhStr.combined, reduction = "umap", label = FALSE, pt.size = 0.1, cols = ("")) 
+DimPlot(WhStr.combined, reduction = "umap", label = TRUE, pt.size = 0.1, split.by = "coverslip" ) 
+
+FeaturePlot(WhStr.combined, c("Aqp4"), split.by = "group")
+
+DotPlot_scCustom(WhStr.combined,features = c("Aldoc","Aqp4","Sox9","Clu","Fjx1",
+                                    "Cldn5","Fn1","Itm2a","Pglyrp1",
+                                    "Cx3cr1","Hexb","P2ry12",
+                                    "Cd68","Pf4","Mrc1","Dab2",
+                                    "Plp1","Cldn11","Mag",
+                                    "Acta2","Vtn","Myl9",
+                                    "Sox4","Sox11","Dcx",
+                                    "Tnr","Sirt2","Gpr17","Pdgfra",
+                                    "Drd1","Drd2","Meg3"),
+                 x_lab_rotate = TRUE)
+
+WhStr.combined <- RenameIdents(object = WhStr.combined, `0` = "Neuron", `1` = "Neuron", `2` = "Neuron", `3` = "Oligodendrocyte", `4` = "Neuron",
+                                        `5` = "Endothelial", `6` = "Astrocyte", `7` = "Microglia",`8` = "Astrocyte",`9` = "OPC",`10` = "Mural",`11` = "Oligodendrocyte",
+                                        `12` = "Astrocyte",`13` = "Oligodendrocyte")
+
+DimPlot(WhStr.combined, reduction = "umap", label = FALSE, pt.size = 0.1, cols = c("#66C2A5", "#9E0142", "#3288BD",
+                                                                                   "#D53E4F" , "#FDAE61", "#E6F598","#5E4FA2"))
+
+
+dfall<- data.frame(WhStr.combined$center.x[WhichCells(object = subset(WhStr.combined,subset = coverslip =="Aged.02"))],
+                   WhStr.combined$center.y[WhichCells(object = subset(WhStr.combined,subset = coverslip =="Aged.02"))],
+                   WhStr.combined@active.ident[WhichCells(object = subset(WhStr.combined,subset = coverslip =="Aged.02"))])
+x <- WhStr.combined$center.x[WhichCells(object = subset(WhStr.combined,subset = coverslip =="Aged.02"))]
+y <- WhStr.combined$center.y[WhichCells(object = subset(WhStr.combined,subset = coverslip =="Aged.02"))]
+group <- WhStr.combined@active.ident[WhichCells(object = subset(WhStr.combined,subset = coverslip =="Aged.02"))]
+ggplot(dfall, aes(x,y,colour=group))+geom_point(size=1)+ theme_classic()
+
+
+
+
+############ Astrocyte clusters Young ##################
+d.fall.astro<- data.frame(Y.Astrocyte.only$center.x[WhichCells(object = subset(Y.Astrocyte.only,subset = coverslip =="Young.01"))],
+                          Y.Astrocyte.only$center.y[WhichCells(object = subset(Y.Astrocyte.only,subset = coverslip =="Young.01"))],
+                          Y.Astrocyte.only@active.ident[WhichCells(object = subset(Y.Astrocyte.only,subset = coverslip =="Young.01"))])
+x <- Y.Astrocyte.only$center.x[WhichCells(object = subset(Y.Astrocyte.only,subset = coverslip =="Young.01"))]
+y <- Y.Astrocyte.only$center.y[WhichCells(object = subset(Y.Astrocyte.only,subset = coverslip =="Young.01"))]
+group <- Y.Astrocyte.only@active.ident[WhichCells(object = subset(Y.Astrocyte.only,subset = coverslip =="Young.01"))]
+ggplot(d.fall.astro, aes(x,y,colour=group))+geom_point(size=1)+ theme_classic()
+
+d.fall.astro.2<- data.frame(Y.Astrocyte.only$center.x[WhichCells(object = subset(Y.Astrocyte.only,subset = coverslip =="Young.02"))],
+                            Y.Astrocyte.only$center.y[WhichCells(object = subset(Y.Astrocyte.only,subset = coverslip =="Young.02"))],
+                            Y.Astrocyte.only@active.ident[WhichCells(object = subset(Y.Astrocyte.only,subset = coverslip =="Young.02"))])
+x <- Y.Astrocyte.only$center.x[WhichCells(object = subset(Y.Astrocyte.only,subset = coverslip =="Young.02"))]
+y <- Y.Astrocyte.only$center.y[WhichCells(object = subset(Y.Astrocyte.only,subset = coverslip =="Young.02"))]
+group <- Y.Astrocyte.only@active.ident[WhichCells(object = subset(Y.Astrocyte.only,subset = coverslip =="Young.02"))]
+ggplot(d.fall.astro.2, aes(x,y,colour=group))+geom_point(size=1)+ theme_classic()
+
+Young.AstroMarkers <- FindAllMarkers(Y.Astrocyte.only, only.pos = TRUE, min.pct = 0.01, logfc.threshold = 0.05)
+write.xlsx(Young.AstroMarkers, "Young.AstroMarkers.xlsx")
+
+
+################### Astrocyte Clusters Aged + Young################
+Astrocyte.only <- subset(x = WhStr.combined, idents = c('9','21','14','23'))
+Astrocyte.only <- NormalizeData(Astrocyte.only)
+Astrocyte.only <- FindVariableFeatures(Astrocyte.only, selection.method = "vst", nfeatures = 383)
+all.genes <- rownames(Astrocyte.only)
+Astrocyte.only <- ScaleData(Astrocyte.only, features = all.genes)
+Astrocyte.only <- RunPCA(Astrocyte.only, features = VariableFeatures(object = Astrocyte.only))
+ElbowPlot(Astrocyte.only)
+Astrocyte.only <- FindNeighbors(Astrocyte.only, dims = 1:15)
+Astrocyte.only <- FindClusters(Astrocyte.only, resolution = 1.0)
+Astrocyte.only <- RunUMAP(Astrocyte.only, dims = 1:15)
+DimPlot(Astrocyte.only, reduction = "umap", label = FALSE, pt.size = 0.5)
+
+DimPlot(Astrocyte.only, reduction = "umap", label = FALSE, pt.size = 0.7, cols = "Spectral")
+
+Astrocyte.only.markers <- FindAllMarkers(Astrocyte.only, only.pos = TRUE, min.pct = 0.01, logfc.threshold = 0.05)
+write.xlsx(Astrocyte.only.markers, "Astrocyte.only.xlsx")
+
+Idents(object=Astrocyte.only) <- Astrocyte.only@meta.data$seurat_clusters
+
+table(Idents(WhStr.combined),WhStr.combined$group)
+
+
+
+dfall<- data.frame(Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))],
+                   Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))],
+                   Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))])
+x <- Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))]
+y <- Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))]
+group <- Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))]
+ggplot(dfall, aes(x,y,colour=group))+geom_point(size=1)+ theme_classic()
+
+
+################ Crym plots / pulls ###########
+Astrocyte.only.crym.positive <- subset (x = Astrocyte.only, subset = Crym < 1)
+FeaturePlot(Astrocyte.only, c("Crym"), pt.size = 0.5)
+Astrocyte.only.crym.negative <- subset (x = Astrocyte.only, subset = Crym > 3)
+ DimPlot(Astrocyte.only.crym.positive, reduction = "umap", label = TRUE)
+ DimPlot(Astrocyte.only.crym.negative, reduction = "umap", label = TRUE)
+VlnPlot(Astrocyte.only, c("Crym"), pt.size = .1) 
+DotPlot(Astrocyte.only, features =  c("Crym"), dot.min= 0, 
+        scale.by = "size", col.min = -6, col.max = 6, cols = c("light blue","red")) + scale_size(range = c(3, 10)) + RotatedAxis()
+
+# Crym + clusters mapped
+
+d.fall.astro.Y2 <- data.frame(Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))],
+                              Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))],
+                              Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))])
+x <- Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))]
+y <- Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))]
+group <- Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))]
+ggplot(d.fall.astro.Y2,aes(x,y,colour=group))+geom_point(size=2)+ scale_color_manual(breaks = c("0","1","2","3","4","5","6","7","8","9","10","11","12","13"),
+                                                                                     values=c("black", "red", "red","black","black",
+                                                                                              "red","black","black","red","black",
+                                                                                              "red","black","red","black"))
+
+
+
+########################### Mapping individual clusters#################
+# Clusters 0-2
+d.fall.astro <- data.frame(Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))],
+                              Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))],
+                              Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))])
+x <- Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))]
+y <- Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))]
+group <- Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))]
+ggplot(d.fall.astro,aes(x,y,colour=group))+geom_point(size=2)+ scale_color_manual(breaks = c("0","1","2","3","4","5","6","7","8","9","10","11","12","13"),
+                                                                                     values=c("red", "black", "black","black","black",
+                                                                                              "black","black","black","black","black",
+                                                                                              "black","black","black","black"))
+test <- Astrocyte.only[[]]
+d.fall.astro.Y2 <- data.frame(Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.02"))],
+                           Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.02"))],
+                           Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.02"))])
+x <- Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.02"))]
+y <- Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.02"))]
+group <- Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.02"))]
+ggplot(d.fall.astro.Y2,aes(x,y,colour=group))+geom_point(size=2)+ scale_color_manual(breaks = c("0","1","2","3","4","5","6","7","8","9","10","11","12"),
+                                                                                  values=c("red", "black", "black","black","black",
+                                                                                              "black","black","black","black","black",
+                                                                                              "black","black","black","black"))
+
+d.fall.astro.A1 <- data.frame(Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))],
+                              Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))],
+                              Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))])
+x <- Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))]
+y <- Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))]
+group <- Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))]
+ggplot(d.fall.astro.A1,aes(x,y,colour=group))+geom_point(size=2)+ scale_color_manual(breaks = c("0","1","2","3","4","5","6","7","8","9","10","11","12"),
+                                                                                     values=c("red", "yellow", "orange","black","black",
+                                                                                              "black","black","black","black","black","black","black","black"))
+
+# Clusters 3-6
+
+
+d.fall.astro <- data.frame(Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.01"))],
+                           Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.01"))],
+                           Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.01"))])
+x <- Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.01"))]
+y <- Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.01"))]
+group <- Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.01"))]
+ggplot(d.fall.astro,aes(x,y,colour=group))+geom_point(size=2)+ scale_color_manual(breaks = c("0","1","2","3","4","5","6","7","8","9","10","11","12"),
+                                                                                  values=c("black", "black", "black","blue","green",
+                                                                                           "red","orange","black","black","black","black","black","black"))
+
+d.fall.astro.Y2 <- data.frame(Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))],
+                              Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))],
+                              Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))])
+x <- Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))]
+y <- Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))]
+group <- Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))]
+ggplot(d.fall.astro.Y2,aes(x,y,colour=group))+geom_point(size=2)+ scale_color_manual(breaks = c("0","1","2","3","4","5","6","7","8","9","10","11","12"),
+                                                                                  values=c("black", "black", "black","blue","green",
+                                                                                           "red","orange","black","black","black","black","black","black"))
+
+d.fall.astro.A1 <- data.frame(Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))],
+                              Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))],
+                              Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))])
+x <- Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))]
+y <- Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))]
+group <- Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))]
+ggplot(d.fall.astro.A1,aes(x,y,colour=group))+geom_point(size=2)+ scale_color_manual(breaks = c("0","1","2","3","4","5","6","7","8","9","10","11","12"),
+                                                                                  values=c("black", "black", "black","blue","green",
+                                                                                           "red","orange","black","black","black","black","black","black"))
+
+
+# Clusters 7-9
+
+
+d.fall.astro <- data.frame(Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.01"))],
+                           Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.01"))],
+                           Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.01"))])
+x <- Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.01"))]
+y <- Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.01"))]
+group <- Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.01"))]
+ggplot(d.fall.astro,aes(x,y,colour=group))+geom_point(size=2)+ scale_color_manual(breaks = c("0","1","2","3","4","5","6","7","8","9","10","11","12"),
+                                                                                  values=c("black", "black", "black","black","black",
+                                                                                           "black","black","yellow","red","green","black","black","black"))
+
+d.fall.astro.Y2 <- data.frame(Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))],
+                              Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))],
+                              Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))])
+x <- Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))]
+y <- Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))]
+group <- Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))]
+ggplot(d.fall.astro.Y2,aes(x,y,colour=group))+geom_point(size=2)+ scale_color_manual(breaks = c("0","1","2","3","4","5","6","7","8","9","10","11","12"),
+                                                                                     values=c("black", "black", "black","black","black",
+                                                                                              "black","black","yellow","red","green","black","black","black"))
+
+d.fall.astro.A1 <- data.frame(Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))],
+                              Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))],
+                              Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))])
+x <- Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))]
+y <- Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))]
+group <- Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))]
+ggplot(d.fall.astro.A1,aes(x,y,colour=group))+geom_point(size=2)+ scale_color_manual(breaks = c("0","1","2","3","4","5","6","7","8","9","10","11","12"),
+                                                                                     values=c("black", "black", "black","black","black",
+                                                                                              "black","black","yellow","red","green","black","black","black"))
+
+
+
+d.fall.astro.A2 <- data.frame(Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.02"))],
+                              Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.02"))],
+                              Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.02"))])
+x <- Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.02"))]
+y <- Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.02"))]
+group <- Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.02"))]
+ggplot(d.fall.astro.A2,aes(x,y,colour=group))+geom_point(size=2)+ scale_color_manual(breaks = c("0","1","2","3","4","5","6","7","8","9","10","11","12"),
+                                                                                     values=c("black", "black", "black","black","black",
+                                                                                              "black","black","yellow","red","green","black","black","black"))
+
+# Clusters 10-12
+
+
+d.fall.astro <- data.frame(Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.01"))],
+                           Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.01"))],
+                           Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.01"))])
+x <- Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.01"))]
+y <- Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.01"))]
+group <- Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.01"))]
+ggplot(d.fall.astro,aes(x,y,colour=group))+geom_point(size=2)+ scale_color_manual(breaks = c("0","1","2","3","4","5","6","7","8","9","10","11","12"),
+                                                                                  values=c("black", "black", "black","black","black",
+                                                                                           "black","black","black","black","black","yellow","pink","blue"))
+
+d.fall.astro.Y2 <- data.frame(Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))],
+                              Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))],
+                              Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))])
+x <- Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))]
+y <- Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))]
+group <- Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Young.02"))]
+ggplot(d.fall.astro.Y2,aes(x,y,colour=group))+geom_point(size=2)+ scale_color_manual(breaks = c("0","1","2","3","4","5","6","7","8","9","10","11","12"),
+                                                                                     values=c("black", "black", "black","black","black",
+                                                                                              "black","black","black","black","black","yellow","pink","blue"))
+
+d.fall.astro.A1 <- data.frame(Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))],
+                              Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))],
+                              Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))])
+x <- Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))]
+y <- Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))]
+group <- Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.01"))]
+ggplot(d.fall.astro.A1,aes(x,y,colour=group))+geom_point(size=2)+ scale_color_manual(breaks = c("0","1","2","3","4","5","6","7","8","9","10","11","12"),
+                                                                                     values=c("black", "black", "black","black","black",
+                                                                                              "black","black","black","black","black","yellow","pink","blue"))
+
+
+
+
+d.fall.astro.A2 <- data.frame(Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.02"))],
+                              Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.02"))],
+                              Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.02"))])
+x <- Astrocyte.only$center.x[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.02"))]
+y <- Astrocyte.only$center.y[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.02"))]
+group <- Astrocyte.only@active.ident[WhichCells(object = subset(Astrocyte.only,subset = coverslip =="Aged.02"))]
+ggplot(d.fall.astro.A2,aes(x,y,colour=group))+geom_point(size=2)+ scale_color_manual(breaks = c("0","1","2","3","4","5","6","7","8","9","10","11","12"),
+                                                                                     values=c("black", "black", "black","black","black",
+                                                                                              "black","black","black","black","black","yellow","pink","blue"))
+
+
