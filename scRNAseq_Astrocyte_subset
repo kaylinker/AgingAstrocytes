@@ -1,0 +1,32 @@
+#Now need BiocManager to load Seurat and related objects
+library(dplyr)
+library(SeuratData)
+install.packages('Seurat')
+library(Seurat)
+library(patchwork)
+install.packages("SeuratObject")
+library(SeuratObject)
+BiocManager::install('limma')
+install.packages('BiocManager')
+library(BiocManager)
+BiocManager::install(c('ape', 'fitdistrplus', 'future', 'future.apply', 'ggridges', 'ica', 'igraph', 'irlba', 'lmtest', 'metap', 'pbapply', 'RANN', 'reticulate', 'ROCR', 'rsvd', 'SDMTools', 'tsne', 'RcppProgress'), ask=T )
+
+library(Matrix)
+
+DimPlot(WhStr.all, reduction = "umap")
+
+
+#Astrocyte Subset
+Astrocyte.only <- subset(x = WhStr.all, idents = c('3'))
+
+VlnPlot(Astrocyte.only, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+Astrocyte.only <- subset(Astrocyte.only, subset = nFeature_RNA > 600 & nFeature_RNA < 3500 & percent.mt < 5)
+Astrocyte.only <- NormalizeData(Astrocyte.only)
+Astrocyte.only <- FindVariableFeatures(Astrocyte.only, selection.method = "vst", nfeatures = 3000)
+all.genes <- rownames(Astrocyte.only)
+Astrocyte.only <- ScaleData(Astrocyte.only, features = all.genes)
+Astrocyte.only <- RunPCA(Astrocyte.only, features = VariableFeatures(object = Astrocyte.only))
+ElbowPlot(Astrocyte.only)
+Astrocyte.only <- FindNeighbors(Astrocyte.only, dims = 1:15)
+Astrocyte.only <- FindClusters(Astrocyte.only, resolution = 0.2)
+Astrocyte.only <- RunUMAP(Astrocyte.only, dims = 1:15)
