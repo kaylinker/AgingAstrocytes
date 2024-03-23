@@ -1,0 +1,240 @@
+########### Setup object #################
+remotes::install_version("Seurat", version = "4.0.5")
+install.packages("Seurat", version = "4.0.5")
+install.packages("qs")
+install.packages("sp")
+install.packages("igraph")
+
+devtools::install_github(repo = "samuel-marsh/scCustomize")
+install('devtools')
+install.packages("tidyverse")
+
+library(BiocManager)
+library(Seurat)
+library(dplyr)
+library(Matrix)
+library(reticulate)
+library(scCustomize)
+library(tidyverse)
+library(patchwork)
+library(viridis)
+library(qs)
+library(sp)
+install.packages("wesanderson")
+library(wesanderson)                                      
+
+options(scipen = 100)
+
+setwd('C:/Users/klinker/Documents/MERFISH/NEW RUNS')
+setwd('E:/MERFISH/MERFISH/NEW RUNS/newnewruns')
+
+################# Aged 05 #################
+Aged05 <- read.table(file = '06242022_VZG184_Aged5_Broad/merged_metadata_and_partitions.csv',sep=",", header = TRUE, row.names=1)
+#t is transpose the table
+Aged05 <- t(Aged05)
+#restricting the matrix to the correct number of genes
+# i have 384 real genes, my genes are 383 checked in excel; 471-87
+Aged05.Genes <- Aged05[1:384,]
+
+
+# Choose a row number within the blanks to sum everything in each prospective column
+Aged05[462,]<-colSums(Aged05.Genes)
+#check sum  here, then use to remove cells w less than 10 genes
+
+# get rid of cells w less than ten genes
+Real.Cells <- which(Aged05[462,] > 10)
+Aged05 <- Aged05[,Real.Cells]
+
+# doublet is typically >1500 rm big cells and small cells
+Big.Cells <- which(Aged05[464,]>=50)
+Aged05 <- Aged05[,Big.Cells]
+mean.RNA05 <-mean(Aged05[462,])
+head(mean.RNA05)
+
+#Create list for vol, x and y 
+volume<-Aged05[464,]
+center.x<-Aged05[465,]
+center.y<-Aged05[466,]
+head(volume)
+plot(center.x, center.y)
+
+
+Aged05 <- Aged05 [-c(384:470),]
+Aged05 <- Aged05/mean.RNA05
+Aged05 <- Aged05/volume
+Aged05.s <- CreateSeuratObject(counts = Aged05)
+Volumes <- data.frame(volume)
+head(Volumes)
+Center.x <- data.frame(center.x)
+head(Center.x)
+Center.y <- data.frame(center.y)
+head(Center.y)
+
+
+
+### check on plot
+ggplot(data.frame(x=Center.x$x, y=Center.y$y), aes(x,y)) + geom_point()
+
+
+Aged05.s@meta.data <- cbind(Aged05.s@meta.data,Volumes)
+Aged05.s@meta.data <- cbind(Aged05.s@meta.data,Center.x)
+Aged05.s@meta.data <- cbind(Aged05.s@meta.data,Center.y)
+
+
+Aged05.s$coverslip <- "Aged.05"
+Aged05.s$group <- "Aged"
+Aged05.s[[]]
+
+rm(Aged05.Genes,Big.Cells,Real.Cells,volume,center.x,center.y,Center.x,Center.y,Volumes)
+#################### Aged 03 ######################
+
+Aged03 <- read.table(file = '06212022_VZG184_Aged3_Broad/merged_metadata_and_partitions.csv',sep=",", header = TRUE, row.names=1)
+Aged03 <- t(Aged03)
+
+Aged03.Genes <- Aged03[1:384,]
+Aged03[462,]<-colSums(Aged03.Genes)
+Real.Cells <- which(Aged03[462,] > 10)
+Aged03 <- Aged03[,Real.Cells]
+
+Big.Cells <- which(Aged03[464,]>= 50)
+Aged03 <- Aged03[,Big.Cells]
+mean.RNA <-mean(Aged03[462,])
+
+volume<-Aged03[464,]
+center.x<-Aged03[465,]
+center.y<-Aged03[466,]
+plot(center.x, center.y)
+Aged03 <- Aged03 [-c(384:470),]
+head(mean.RNA)
+Aged03 <- Aged03/mean.RNA
+Aged03 <- Aged03/volume
+
+Aged03.s <- CreateSeuratObject(counts = Aged03)
+Volumes <- data.frame(volume)
+head(Volumes)
+Center.x <- data.frame(center.x)
+head(Center.x)
+Center.y <- data.frame(center.y)
+head(Center.y)
+
+ggplot(data.frame(x=Center.x$x, y=Center.y$y), aes(x,y)) + geom_point()
+
+
+Aged03.s@meta.data <- cbind(Aged03.s@meta.data,Volumes)
+Aged03.s@meta.data <- cbind(Aged03.s@meta.data,Center.x)
+Aged03.s@meta.data <- cbind(Aged03.s@meta.data,Center.y)
+
+Aged05.s[[]]
+
+rm(Aged03,Aged03.Genes,Big.Cells,Real.Cells,volume,center.x,center.y,Center.x,Center.y,Volumes)
+
+Aged03.s$coverslip <- "Aged.03"
+Aged03.s$group <- "Aged"
+
+
+VlnPlot(Aged.combined,features="nCount_RNA",group.by="coverslip",pt.size=1)
+
+
+#############Aged 02#############
+
+
+Aged02 <- read.table(file = "09292022_VZG184_Aged02/09292022_VZG184_Aged02/merged_metadata_and_partitions.csv",sep=",", header = TRUE, row.names=1)
+Aged02 <- t(Aged02)
+
+Aged02.Genes <- Aged02[1:384,]
+Aged02[462,]<-colSums(Aged02.Genes)
+Real.Cells <- which(Aged02[462,] > 10)
+Aged02 <- Aged02[,Real.Cells]
+
+Big.Cells <- which(Aged02[464,]>= 50)
+Aged02 <- Aged02[,Big.Cells]
+mean.RNA <-mean(Aged02[462,])
+
+volume<-Aged02[464,]
+center.x<-Aged02[465,]
+center.y<-Aged02[466,]
+plot(center.x, center.y)
+Aged02 <- Aged02 [-c(384:470),]
+head(mean.RNA)
+Aged02 <- Aged02/mean.RNA
+Aged02 <- Aged02/volume
+
+Aged02.s <- CreateSeuratObject(counts = Aged02)
+Volumes <- data.frame(volume)
+head(Volumes)
+Center.x <- data.frame(center.x)
+head(Center.x)
+Center.y <- data.frame(center.y)
+head(Center.y)
+
+ggplot(data.frame(x=Center.x$x, y=Center.y$y), aes(x,y)) + geom_point()
+
+
+Aged02.s@meta.data <- cbind(Aged02.s@meta.data,Volumes)
+Aged02.s@meta.data <- cbind(Aged02.s@meta.data,Center.x)
+Aged02.s@meta.data <- cbind(Aged02.s@meta.data,Center.y)
+
+Aged02.s[[]]
+
+rm(Aged03,Aged02.Genes,Big.Cells,Real.Cells,volume,center.x,center.y,Center.x,Center.y,Volumes)
+
+Aged02.s$coverslip <- "Aged.02"
+Aged02.s$group <- "Aged"
+
+Aged.combined <- merge(Aged03.s,y=c(Aged05.s, Aged02.s),add.cell.ids = c("1","2","3"))
+VlnPlot(Aged.combined,features="nCount_RNA",group.by="coverslip",pt.size=0)
+
+Aged.combined <- merge(Aged03.s,y=c(Aged05.s, Aged02.s),add.cell.ids = c("1","2","3"))
+
+####### young 05 ########
+Young05 <- read.table(file = '06282022_VZG184_Young5_Broad/merged_metadata_and_partitions.csv',sep=",", header = TRUE, row.names=1)
+Young05 <- t(Young05)
+
+Young05.Genes <- Young05[1:383,]
+Young05[462,]<-colSums(Young05.Genes)
+Real.Cells <- which(Young05[462,] > 10)
+Young05 <- Young05[,Real.Cells]
+
+
+Big.Cells <- which(Young05[464,]>= 50)
+Young05 <- Young05[,Big.Cells]
+mean.RNA <-mean(Young05[462,])
+head(mean.RNA)
+volume<-Young05[464,]
+center.x<-Young05[465,]
+center.y<-Young05[466,]
+plot(center.x, center.y)
+
+Young05 <- Young05 [-c(384:470),]
+Young05 <- Young05/mean.RNA
+Young05 <- Young05/volume
+
+rownames(Young05)
+#### not doing Young05 <- Young05/volume
+Young05.s <- CreateSeuratObject(counts = Young05)
+Volumes <- data.frame(volume)
+head(Volumes)
+Center.x <- data.frame(center.x)
+head(Center.x)
+Center.y <- data.frame(center.y)
+head(Center.y)
+
+ggplot(data.frame(x=Center.x$x, y=Center.y$y), aes(x,y)) + geom_point()
+rownames(Young05)
+
+Young05.s@meta.data <- cbind(Young05.s@meta.data,Volumes)
+Young05.s@meta.data <- cbind(Young05.s@meta.data,Center.x)
+Young05.s@meta.data <- cbind(Young05.s@meta.data,Center.y)
+
+Young05.s[[]]
+rownames(Young05.s)
+
+rm(Young05.Genes,Big.Cells,Real.Cells,volume,center.x,center.y,Center.x,Center.y,Volumes, mean.RNA, mean.RNA05)
+rownames (Young05)
+Young05.s$coverslip <- "Young.05"
+Young05.s$group <- "Young"
+
+VlnPlot(Young05.s,features="nCount_RNA",group.by="coverslip",pt.size=1)
+
+
+
